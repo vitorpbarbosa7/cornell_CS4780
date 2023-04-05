@@ -10,8 +10,10 @@ class NaiveBayesSingleVar:
     def fit(self, X_train, Y_train):
 
         self.Y_unique = np.unique(Y_train)
+        
         self.y_count = len(self.Y_unique)
         self.X_unique = np.unique(X_train)
+        
         self.x_count = len(self.X_unique)
         self.__X_given_y = [X_train[Y_train == y] for y in np.unique(Y_train)]
 
@@ -32,7 +34,7 @@ class NaiveBayesSingleVar:
             denominator = len(Y_train[Y_train == y])
             priors[j] = denominator/n_points
 
-        self.prob_table = pd.DataFrame(prob_table, columns = self.X_unique, index = self.Y_unique)
+        self.prob_table = pd.DataFrame(prob_table.T, columns = self.X_unique, index = self.Y_unique)
         self.priors = pd.DataFrame(priors, index = self.Y_unique)
         self.x_normalization = pd.DataFrame(x_normalization, index = self.X_unique)
 
