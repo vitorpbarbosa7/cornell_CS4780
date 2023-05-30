@@ -8,6 +8,8 @@ w = np.zeros(X.shape[1])
 while True:	
 	m = 0
 	for i in range(X.shape[0]):
+
+	# if misclassified, must be updated
 		if y[i]*(np.dot(w,X[i])) <= 0:
 			w = w + y[i]*X[i]
 			m += 1
