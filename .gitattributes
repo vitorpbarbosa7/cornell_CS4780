@@ -1,0 +1,4 @@
+*.ipynb linguist-vendored
+**/*.ipynb linguist-vendored
+*.html linguist-vendored
+**/*.html linguist-vendored
