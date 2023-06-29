@@ -18,7 +18,6 @@ print(left)
 print(right)
 
 # ----------------------
-tree.append([left,right])
 
 # continue
 m = len(left) // 2
@@ -33,4 +32,6 @@ right_right =  right[m:]
 
 print(right_left, right_right)
 
-tree.append([left,right])
+
+tree.append([[[left_left],[left_right]],[[right_left],[right_right]]])
+print(tree)
