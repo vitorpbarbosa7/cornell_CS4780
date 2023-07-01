@@ -5,14 +5,17 @@ import numpy as np
 
 points = [1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,18,20,23]
 
-points = [1,1,2,3,4,5,6,8]
+# points = [1,1,2,3,4,5,6,8]
 
 def euclidean_distance(a, b):
     return np.linalg.norm(a,b)
 
 class kdTree:
 
-    def __init__(self, points, min_points_node:int = 2):
+    def __init__(self, points, min_points_node:int = 2, parent = None):
+        '''
+        Node structure. Several nodes makes a tree, and that is it
+        '''
 
         # if it has points, so continue to add nodes to the left and to the right
         if len(points) > 1:
@@ -25,10 +28,14 @@ class kdTree:
 
             print(points)
             print(self.divisor)
-            # breakpoint()
 
-            self.left = kdTree(points[:m])
-            self.right = kdTree(points[m:])
+            # let's grow the tree and keep track of parent node
+            # first time it will be None
+            # next time it will be a node, (second time it will be the root node)
+            # third time will be the nodes which are children from the root node
+            self._parent = parent
+            self.left = kdTree(points = points[:m], parent = self)
+            self.right = kdTree(points = points[m:], parent = self)
 
         if len(points) == min_points_node:
             
@@ -36,10 +43,7 @@ class kdTree:
             # here we can be at right or left side, important it is only at last level
             self.node_points = points
 
-    def new_point(self, npoint, parent = None):
-        if parent is not None:
-            self._parent = parent
-            print(self._parent.divisor)
+    def new_point(self, npoint):
 
         # stop criteria
         # we're at the last level if there are points in it
@@ -48,6 +52,12 @@ class kdTree:
         
             self.distance_leaf_nodes = np.sqrt((np.mean(self.node_points) - npoint)**2)
             print(f'Distance to the mean position of this leaf node is {self.distance_leaf_nodes}')
+
+            if self._parent.divisor is not None:
+                distance_to_parent_wall = np.sqrt(self._parent.divisor - npoint)**2
+                print(f'Distance to parent wall {distance_to_parent_wall}')
+                if self.distance_leaf_nodes > distance_to_parent_wall:
+                    self._parent.new_point(npoint)
 
             # go one level up in the tree, and calculate the distance to the wall
             # ??? chatgpt, put the code here, or another location
@@ -62,11 +72,11 @@ class kdTree:
             # the object to go further into the search will be the right node (which can also contain more nodes, and also contains the method new_point as it is from this class)
 
             # keep track of parent node
-            self.right.new_point(npoint, parent = self)
+            self.right.new_point(npoint)
         else:
             # same comment here, same thing
             self = self.left
-            self.new_point(npoint, parent = self)
+            self.new_point(npoint)
 
 if __name__ == '__main__':
     kdtree = kdTree(points)
