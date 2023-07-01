@@ -8,8 +8,6 @@ points = [[1,1],[1,2],[2,1],[2,2],
           [4,1],[4,2],[5,1],[5,2],
           [4,4],[4,5],[5,4],[5,5]]
 
-# points = [[2,4],[4,2],[5,1]]
-
 points = np.array(points)
 
 m = points.shape[0] // 2 
@@ -35,7 +33,6 @@ left_right  = left[left[:,d]>=divisor]
 
 right_left = right[right[:,d]<divisor]
 right_right  = right[right[:,d]>=divisor]
-
 
 plt.scatter(left_left[:,0], left_left[:,1], color = 'red')
 plt.scatter(left_right[:,0], left_right[:,1], color = 'blue')
